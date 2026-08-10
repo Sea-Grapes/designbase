@@ -115,6 +115,7 @@ async function writeManifest(root: FileSystemDirectoryHandle, data) {
 const cards = document.querySelector('.cards')
 
 function createCard(entry: Media) {
+    cards.replaceChildren()
     const card = document.createElement('div')
     card.className = 'card'
     cards.append(card)
@@ -135,12 +136,12 @@ function createCard(entry: Media) {
             dom.preload = 'metadata'
             dom.src = url
             await dom.play()
-            card.addEventListener('click', () => {
-                if (dom.paused) dom.play()
-                else dom.pause()
-            })
+            // card.addEventListener('click', () => {
+            //     if (dom.paused) dom.play()
+            //     else dom.pause()
+            // })
         }
-        else if (file.type.startsWith('img')) {
+        else if (file.type.startsWith('image')) {
             dom = document.createElement('img')
             dom.src = url
         }
@@ -163,13 +164,13 @@ let manifest
 const open_folder_btn = document.querySelector<HTMLButtonElement>('.open-folder')
 open_folder_btn.addEventListener('click', async e => {
     handle = await pickFolder()
-    await onFolderSelection()
+    await handleUpdate()
 })
 
-await tryRestoreFolder()
-await onFolderSelection()
+handle = await tryRestoreFolder()
+await handleUpdate()
 
-async function onFolderSelection() {
+async function handleUpdate() {
     if (!handle) return
     media = await scanMedia(handle)
     manifest = await readManifest(handle)
