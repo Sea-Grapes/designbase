@@ -3,6 +3,7 @@
     "dev": "vite app"
   },
   "devDependencies": {
+    "@types/wicg-file-system-access": "^2023.10.7",
     "vite": "^8.2.1"
   },
   "dependencies": {

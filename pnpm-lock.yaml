@@ -12,6 +12,9 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
     devDependencies:
+      '@types/wicg-file-system-access':
+        specifier: ^2023.10.7
+        version: 2023.10.7
       vite:
         specifier: ^8.2.1
         version: 8.2.1
@@ -113,6 +116,9 @@ packages:
 
   '@rolldown/pluginutils@1.0.1':
     resolution: {integrity: sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==}
+
+  '@types/wicg-file-system-access@2023.10.7':
+    resolution: {integrity: sha512-g49ijasEJvCd7ifmAY2D0wdEtt1xRjBbA33PJTiv8mKBr7DoMsPeISoJ8oQOTopSRi+FBWPpPW5ouDj2QPKtGA==}
 
   detect-libc@2.1.2:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
@@ -328,6 +334,8 @@ snapshots:
     optional: true
 
   '@rolldown/pluginutils@1.0.1': {}
+
+  '@types/wicg-file-system-access@2023.10.7': {}
 
   detect-libc@2.1.2: {}
 

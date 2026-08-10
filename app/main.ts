@@ -1,15 +1,3 @@
-declare function showDirectoryPicker(): Promise<FileSystemDirectoryHandle>
-
-
-export async function pickFolder() {
-    if (!('showDirectoryPicker' in window)) return console.error('No file system access')
-    const handle = await showDirectoryPicker()
-}
-
-class Db {
-    DB_NAME
-}
-
 const DB_NAME = 'designbase'
 const STORE_NAME = 'fs'
 
@@ -49,4 +37,22 @@ function del(key: IDBValidKey): Promise<void> {
         const t = db.transaction(STORE_NAME, 'readwrite')
         
     })
+}
+
+export async function pickFolder(): Promise<FileSystemDirectoryHandle | null> {
+    if (!('showDirectoryPicker' in window)) {
+        console.error('No file system access')
+        return null
+    }
+    const handle = await showDirectoryPicker({ mode: 'readwrite' })
+    await set('handle', handle)
+    return handle
+}
+
+async function restoreFolder(): Promise<FileSystemDirectoryHandle | null> {
+    const handle = await get('handle') as FileSystemDirectoryHandle
+    if (!handle) return null
+    let req = await handle.queryPermission({ mode: 'readwrite' })
+    if (req !== 'granted') req = await handle.requestPermission({ mode: 'readwrite' })
+    return req === 'granted' ? handle : null
 }
