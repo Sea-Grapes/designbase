@@ -9,12 +9,12 @@
 
   <style type='text/tailwindcss'>
     body {
-      @apply p-12;
+      @apply p-4 md:p-12;
     }
 
     .cards {
       @apply min-h-screen grid gap-4;
-      grid-template-columns: repeat(auto-fit, 25rem);
+       grid-template-columns: repeat(auto-fit, minmax(min(25rem, 100%), 25rem));
     }
 
     .card {
