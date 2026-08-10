@@ -62,7 +62,7 @@ async function tryRestoreFolder(): Promise<FileSystemDirectoryHandle | null> {
 
 interface Media {
     path: string
-    handle: FileSystemHandle
+    handle: FileSystemFileHandle
 }
 
 async function scanMediaRecursive(dir: FileSystemDirectoryHandle, prefix: string[] = []) {
@@ -118,19 +118,64 @@ function createCard(entry: Media) {
     const card = document.createElement('div')
     card.className = 'card'
     cards.append(card)
+
+    const obs = new IntersectionObserver(async ([e]) => {
+        if (!e.isIntersecting) return
+        obs.disconnect()
+
+        const file = await entry.handle.getFile()
+        const url = URL.createObjectURL(file)
+
+        // const dom = file.type.startsWith('video') ? document.createElement('video') : document.createElement('img')
+        let dom
+        if (file.type.startsWith('video')) {
+            dom = document.createElement('video')
+            dom.muted = true
+            dom.loop = true
+            dom.preload = 'metadata'
+            dom.src = url
+            await dom.play()
+            // card.addEventListener('mouseenter', () => dom.play())
+            // card.addEventListener('mouseleave', () => dom.pause())
+        }
+        else if (file.type.startsWith('img')) {
+            dom = document.createElement('img')
+            dom.src = url
+        }
+
+        if (!dom) return
+        card.append(dom)
+
+
+    })
+    obs.observe(card)
+    return card
 }
 
 
 let handle = await tryRestoreFolder()
+if (handle) console.log('folder restored')
 let media = []
+let manifest
 
 const open_folder_btn = document.querySelector<HTMLButtonElement>('.open-folder')
 open_folder_btn.addEventListener('click', async e => {
     handle = await pickFolder()
+    onFolderSelection()
+})
+
+onFolderSelection()
+
+async function onFolderSelection() {
+    if (!handle) return
     media = await scanMedia(handle)
+    manifest = await readManifest(handle)
+
+    console.log('media', media)
+    console.log('manifest', manifest)
 
     for (const item of media) {
         createCard(item)
     }
-})
+}
 

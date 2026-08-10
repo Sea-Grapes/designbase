@@ -7,24 +7,30 @@
   <title>Designbase</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-  <style>
+  <style type='text/tailwindcss'>
+    body {
+      @apply p-12;
+    }
+
     .cards {
-      @apply min-h-screen grid;
+      @apply min-h-screen grid gap-4;
+      grid-template-columns: repeat(auto-fit, 25rem);
     }
 
     .card {
-      @apply w-25 h-25 aspect-square bg-zinc-50 rounded-md;
+      @apply aspect-square bg-zinc-100 rounded-md overflow-hidden;
+
+      > video {
+        @apply object-cover w-full h-full min-w-0 min-h-0;
+      }
     }
   </style>
 </head>
 
 <body>
   <button class='open-folder cursor-pointer'>open folder</button>
+  <div class='cards'></div>
   <script type='module' src='main.ts'></script>
-
-  <div class='cards'>
-
-  </div>
 </body>
 
 </html>
