@@ -51,10 +51,66 @@ export async function pickFolder(): Promise<FileSystemDirectoryHandle | null> {
     return handle
 }
 
-async function restoreFolder(): Promise<FileSystemDirectoryHandle | null> {
+async function tryRestoreFolder(): Promise<FileSystemDirectoryHandle | null> {
     const handle = await get('handle') as FileSystemDirectoryHandle
     if (!handle) return null
     let req = await handle.queryPermission({ mode: 'readwrite' })
     if (req !== 'granted') req = await handle.requestPermission({ mode: 'readwrite' })
     return req === 'granted' ? handle : null
+}
+
+let handle = await tryRestoreFolder()
+
+const open_folder_btn = document.querySelector('.open-folder') as HTMLButtonElement
+open_folder_btn.addEventListener('click', async e => {
+    handle = await pickFolder()
+})
+
+
+async function scanMediaRecursive(dir: FileSystemDirectoryHandle, prefix: string[] = []) {
+    const result = []
+
+    for await (const [name, handle] of dir.entries()) {
+        if (handle.kind === 'directory') result.push(...await scanMediaRecursive(handle, [...prefix, name]))
+        else if (handle.kind === 'file') {
+            result.push({
+                path: [...prefix, name].join('/'),
+                handle,
+            })
+        }
+    }
+
+    return result
+}
+
+export async function scanMedia(root: FileSystemDirectoryHandle) {
+    let media_dir
+
+    try {
+        media_dir = await root.getDirectoryHandle('media')
+    }
+    catch {
+        media_dir = await root.getDirectoryHandle('media', { create: true })
+        return []
+    }
+    return scanMediaRecursive(media_dir)
+}
+
+async function readManifest(root: FileSystemDirectoryHandle) {
+    try {
+        const h = await root.getFileHandle('manifest.json')
+        const file = await h.getFile()
+        const text = await file.text()
+        return text ? JSON.parse(text) : {}
+    }
+    catch {
+        return {}
+    }
+}
+
+async function writeManifest(root: FileSystemDirectoryHandle, data) {
+    const h = await root.getFileHandle('manifest.json', { create: true })
+    const writable = await h.createWritable()
+    await writable.write(JSON.stringify(data, null, 2))
+    await writable.close()
 }
