@@ -127,27 +127,30 @@ function createCard(entry: Media) {
         const file = await entry.handle.getFile()
         const url = URL.createObjectURL(file)
 
-        // const dom = file.type.startsWith('video') ? document.createElement('video') : document.createElement('img')
-        let dom
+        let display_el
         if (file.type.startsWith('video')) {
-            dom = document.createElement('video') as HTMLVideoElement
-            dom.muted = true
-            dom.loop = true
-            dom.preload = 'metadata'
-            dom.src = url
-            await dom.play()
+            display_el = document.createElement('video') as HTMLVideoElement
+            display_el.muted = true
+            display_el.loop = true
+            display_el.preload = 'metadata'
+            display_el.src = url
+            await display_el.play()
             // card.addEventListener('click', () => {
             //     if (dom.paused) dom.play()
             //     else dom.pause()
             // })
         }
         else if (file.type.startsWith('image')) {
-            dom = document.createElement('img')
-            dom.src = url
+            display_el = document.createElement('img')
+            display_el.src = url
         }
 
-        if (!dom) return
-        card.append(dom)
+        if (!display_el) return
+        card.append(display_el)
+
+        const title = document.createElement('p')
+        title.textContent = file.name
+        card.append(title)
 
 
     })
