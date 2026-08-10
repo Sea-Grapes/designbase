@@ -9,12 +9,24 @@
 
   <style type='text/tailwindcss'>
     body {
-      @apply p-4 md:p-12;
+      @apply p-4 md:p-12 space-y-8;
     }
 
     .cards {
       @apply min-h-screen grid gap-4;
        grid-template-columns: repeat(auto-fit, minmax(min(25rem, 100%), 25rem));
+    }
+
+    .menu {
+      @apply flex gap-4;
+    }
+
+    button.open-folder {
+      @apply block text-nowrap p-2;
+    }
+
+    input[name='search'] {
+      @apply w-full p-2 bg-zinc-100;
     }
 
     .card {
@@ -28,7 +40,10 @@
 </head>
 
 <body>
-  <button class='open-folder cursor-pointer'>open folder</button>
+  <div class='menu'>
+    <button class='open-folder cursor-pointer'>open folder</button>
+    <input name='search' type='text' placeholder='search'>
+  </div>
   <div class='cards'></div>
   <script type='module' src='main.ts'></script>
 </body>

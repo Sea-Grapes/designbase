@@ -129,14 +129,16 @@ function createCard(entry: Media) {
         // const dom = file.type.startsWith('video') ? document.createElement('video') : document.createElement('img')
         let dom
         if (file.type.startsWith('video')) {
-            dom = document.createElement('video')
+            dom = document.createElement('video') as HTMLVideoElement
             dom.muted = true
             dom.loop = true
             dom.preload = 'metadata'
             dom.src = url
             await dom.play()
-            // card.addEventListener('mouseenter', () => dom.play())
-            // card.addEventListener('mouseleave', () => dom.pause())
+            card.addEventListener('click', () => {
+                if (dom.paused) dom.play()
+                else dom.pause()
+            })
         }
         else if (file.type.startsWith('img')) {
             dom = document.createElement('img')
