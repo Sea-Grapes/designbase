@@ -59,13 +59,6 @@ async function tryRestoreFolder(): Promise<FileSystemDirectoryHandle | null> {
     return req === 'granted' ? handle : null
 }
 
-let handle = await tryRestoreFolder()
-
-const open_folder_btn = document.querySelector('.open-folder') as HTMLButtonElement
-open_folder_btn.addEventListener('click', async e => {
-    handle = await pickFolder()
-})
-
 
 async function scanMediaRecursive(dir: FileSystemDirectoryHandle, prefix: string[] = []) {
     const result = []
@@ -114,3 +107,13 @@ async function writeManifest(root: FileSystemDirectoryHandle, data) {
     await writable.write(JSON.stringify(data, null, 2))
     await writable.close()
 }
+
+
+let handle = await tryRestoreFolder()
+let media = []
+
+const open_folder_btn = document.querySelector<HTMLButtonElement>('.open-folder')
+open_folder_btn.addEventListener('click', async e => {
+    handle = await pickFolder()
+    media = await scanMedia(handle)
+})
