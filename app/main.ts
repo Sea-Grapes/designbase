@@ -6,6 +6,10 @@ export async function pickFolder() {
     const handle = await showDirectoryPicker()
 }
 
+class Db {
+    DB_NAME
+}
+
 const DB_NAME = 'designbase'
 const STORE_NAME = 'fs'
 
