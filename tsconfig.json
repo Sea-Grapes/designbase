@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
-    "strict": false
+    "strict": false,
+    "target": "esnext",
+    "lib": ["DOM", "ESNext"]
   }
 }
