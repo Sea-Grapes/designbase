@@ -155,7 +155,7 @@ function createCard(entry: Media) {
 }
 
 
-let handle = await tryRestoreFolder()
+let handle
 if (handle) console.log('folder restored')
 let media = []
 let manifest
@@ -163,10 +163,11 @@ let manifest
 const open_folder_btn = document.querySelector<HTMLButtonElement>('.open-folder')
 open_folder_btn.addEventListener('click', async e => {
     handle = await pickFolder()
-    onFolderSelection()
+    await onFolderSelection()
 })
 
-onFolderSelection()
+await tryRestoreFolder()
+await onFolderSelection()
 
 async function onFolderSelection() {
     if (!handle) return
