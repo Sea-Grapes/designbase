@@ -35,7 +35,9 @@ function get(key: IDBValidKey): Promise<unknown> {
 function del(key: IDBValidKey): Promise<void> {
     return new Promise((ok, err) => {
         const t = db.transaction(STORE_NAME, 'readwrite')
-        
+        t.objectStore(STORE_NAME).delete(key)
+        t.oncomplete = () => ok()
+        t.onerror = () => err(t.error)
     })
 }
 
