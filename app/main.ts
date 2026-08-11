@@ -114,7 +114,7 @@ async function writeManifest(root: FileSystemDirectoryHandle, data) {
 
 const cards = document.querySelector('.cards')
 
-function createCard(entry: Media) {
+function createCard(entry: Media, manifest) {
     cards.replaceChildren()
     const card = document.createElement('div')
     card.className = 'card'
@@ -183,7 +183,7 @@ async function handleUpdate() {
     console.log('manifest', manifest)
 
     for (const item of media) {
-        createCard(item)
+        createCard(item, manifest)
     }
 }
 

@@ -1,12 +1,11 @@
 {
-  "media": [
-    {
-      "file": "video.mp4",
+  "metadata": {
+    "video.mp4": {
       "link": "https://x.com/joshpuckett/status/2007811503487861072",
       "tags": [
         "supermodern",
         "light"
       ]
     }
-  ]
+  }
 }
