@@ -23,7 +23,7 @@
     }
 
     input[name='search'] {
-      @apply w-full p-2 bg-zinc-100;
+      @apply w-full p-2 px-3 bg-zinc-100 rounded-md;
     }
 
     .cards {
@@ -33,10 +33,9 @@
     }
 
     .card {
-      @apply rounded-md overflow-hidden;
 
       > video {
-        @apply aspect-square object-cover w-full min-w-0 min-h-0;
+        @apply aspect-square object-cover w-full min-w-0 min-h-0  border border-zinc-200 shadow-sm rounded-xl overflow-hidden;
       }
     }
   </style>

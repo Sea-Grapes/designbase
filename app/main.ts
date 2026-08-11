@@ -117,7 +117,6 @@ const cards = document.querySelector('.cards')
 function createCard(entry: Media, manifest) {
     const meta = manifest.metadata[entry.path] ?? {}
 
-    cards.replaceChildren()
     const card = document.createElement('div')
     card.className = 'card'
     cards.append(card)
@@ -136,6 +135,7 @@ function createCard(entry: Media, manifest) {
             display_el.loop = true
             display_el.preload = 'metadata'
             display_el.src = url
+            display_el.setAttribute('playsinline', '')
             await display_el.play()
             // card.addEventListener('click', () => {
             //     if (dom.paused) dom.play()
@@ -177,6 +177,7 @@ async function handleUpdate() {
     console.log('media', media)
     console.log('manifest', manifest)
 
+    cards.replaceChildren()
     for (const item of media) {
         createCard(item, manifest)
     }
