@@ -115,6 +115,8 @@ async function writeManifest(root: FileSystemDirectoryHandle, data) {
 const cards = document.querySelector('.cards')
 
 function createCard(entry: Media, manifest) {
+    const meta = manifest.metadata[entry.path] ?? {}
+
     cards.replaceChildren()
     const card = document.createElement('div')
     card.className = 'card'
@@ -147,13 +149,6 @@ function createCard(entry: Media, manifest) {
 
         if (!display_el) return
         card.append(display_el)
-
-        const title = document.createElement('p')
-        title.className = 'title'
-        title.textContent = file.name
-        card.append(title)
-
-
     })
     obs.observe(card)
     return card
