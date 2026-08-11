@@ -149,6 +149,7 @@ function createCard(entry: Media) {
         card.append(display_el)
 
         const title = document.createElement('p')
+        title.className = 'title'
         title.textContent = file.name
         card.append(title)
 

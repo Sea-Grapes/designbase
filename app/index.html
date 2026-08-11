@@ -12,10 +12,7 @@
       @apply p-4 md:p-12 space-y-8;
     }
 
-    .cards {
-      @apply min-h-screen grid gap-4;
-       grid-template-columns: repeat(auto-fit, minmax(min(25rem, 100%), 25rem));
-    }
+
 
     .menu {
       @apply flex gap-4;
@@ -29,11 +26,21 @@
       @apply w-full p-2 bg-zinc-100;
     }
 
+    .cards {
+      @apply min-h-screen grid gap-4;
+      align-items: start;
+      grid-template-columns: repeat(auto-fit, minmax(min(25rem, 100%), 25rem));
+    }
+
     .card {
-      @apply aspect-square bg-zinc-100 rounded-md overflow-hidden;
+      @apply rounded-md overflow-hidden;
 
       > video {
-        @apply object-cover w-full h-full min-w-0 min-h-0;
+        @apply aspect-square object-cover w-full min-w-0 min-h-0;
+      }
+
+      > .title {
+        @apply mbs-1;
       }
     }
   </style>
