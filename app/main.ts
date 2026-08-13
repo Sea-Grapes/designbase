@@ -112,47 +112,13 @@ async function writeManifest(root: FileSystemDirectoryHandle, data) {
     await writable.close()
 }
 
+/* -------------------------------------------------------------------------- */
+/*    Implementation section (probably switch to separate file eventually)    */
+/* -------------------------------------------------------------------------- */
+
 const cards = document.querySelector('.cards')
 
-function createCard(entry: Media, manifest) {
-    const meta = manifest.metadata[entry.path] ?? {}
 
-    const card = document.createElement('div')
-    card.className = 'card'
-    cards.append(card)
-
-    const obs = new IntersectionObserver(async ([e]) => {
-        if (!e.isIntersecting) return
-        obs.disconnect()
-
-        const file = await entry.handle.getFile()
-        const url = URL.createObjectURL(file)
-
-        let display_el
-        if (file.type.startsWith('video')) {
-            display_el = document.createElement('video') as HTMLVideoElement
-            display_el.muted = true
-            display_el.loop = true
-            display_el.preload = 'metadata'
-            display_el.src = url
-            display_el.setAttribute('playsinline', '')
-            await display_el.play()
-            // card.addEventListener('click', () => {
-            //     if (dom.paused) dom.play()
-            //     else dom.pause()
-            // })
-        }
-        else if (file.type.startsWith('image')) {
-            display_el = document.createElement('img')
-            display_el.src = url
-        }
-
-        if (!display_el) return
-        card.append(display_el)
-    })
-    obs.observe(card)
-    return card
-}
 
 
 let handle
@@ -183,3 +149,45 @@ async function handleUpdate() {
     }
 }
 
+function createCard(entry: Media, manifest) {
+    const meta = manifest.metadata[entry.path] ?? {}
+
+    const card = document.createElement('div')
+    card.className = 'card'
+    cards.append(card)
+
+    const obs = new IntersectionObserver(async ([e]) => {
+        if (!e.isIntersecting) return
+        obs.disconnect()
+
+        const file = await entry.handle.getFile()
+        const url = URL.createObjectURL(file)
+
+        let display_el
+        if (file.type.startsWith('video')) {
+            display_el = document.createElement('video') as HTMLVideoElement
+            display_el.muted = true
+            display_el.loop = true
+            display_el.preload = 'metadata'
+            display_el.src = url
+            display_el.setAttribute('playsinline', '')
+            await display_el.play()
+
+            // if (dom.paused) dom.play()
+            // else dom.pause()
+        }
+        else if (file.type.startsWith('image')) {
+            display_el = document.createElement('img')
+            display_el.src = url
+        }
+
+        if (!display_el) return
+        card.append(display_el)
+
+        card.addEventListener('click', () => {
+            openDetail(entry, manifest, display_el, card)
+        })
+    })
+    obs.observe(card)
+    return card
+}

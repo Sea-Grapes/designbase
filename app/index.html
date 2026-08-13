@@ -12,8 +12,6 @@
       @apply p-4 md:p-12 space-y-8;
     }
 
-
-
     .menu {
       @apply flex gap-4;
     }
@@ -33,9 +31,20 @@
     }
 
     .card {
-
       > video {
         @apply aspect-square object-cover w-full min-w-0 min-h-0  border border-zinc-200 shadow-sm rounded-xl overflow-hidden;
+      }
+    }
+
+    .detail {
+      @apply fixed top-0 left-0 flex;
+
+      > .media {
+        @apply grow grid content-center;
+      }
+
+      > .metadata {
+        @apply basis-[20rem];
       }
     }
   </style>
@@ -47,6 +56,10 @@
     <input name='search' type='text' placeholder='search'>
   </div>
   <div class='cards'></div>
+  <div class='detail hidden'>
+    <div class='media'></div>
+    <div class='metadata'></div>
+  </div>
   <script type='module' src='main.ts'></script>
 </body>
 
