@@ -1,3 +1,8 @@
+// Note: probably convert these into separate files.
+// Using a single file/top level functions for now for convenience (avoiding 'premature optimization'?)
+
+/* ----------------------- Section 1: IndexedDB Utils ----------------------- */
+
 const DB_NAME = 'designbase'
 const STORE_NAME = 'fs'
 
@@ -41,6 +46,8 @@ function del(key: IDBValidKey): Promise<void> {
     })
 }
 
+/* ------------------------- Folder picking/opening ------------------------- */
+
 export async function pickFolder(): Promise<FileSystemDirectoryHandle | null> {
     if (!('showDirectoryPicker' in window)) {
         console.error('No file system access')
@@ -59,6 +66,7 @@ async function tryRestoreFolder(): Promise<FileSystemDirectoryHandle | null> {
     return req === 'granted' ? handle : null
 }
 
+/* ----------------------------- handling media ----------------------------- */
 
 interface Media {
     path: string
@@ -112,14 +120,9 @@ async function writeManifest(root: FileSystemDirectoryHandle, data) {
     await writable.close()
 }
 
-/* -------------------------------------------------------------------------- */
-/*    Implementation section (probably switch to separate file eventually)    */
-/* -------------------------------------------------------------------------- */
+/* ---------------- Implementation/user (Idk what to call it) --------------- */
 
 const cards = document.querySelector('.cards')
-
-
-
 
 let handle
 if (handle) console.log('folder restored')
@@ -149,8 +152,8 @@ async function handleUpdate() {
     }
 }
 
-function createCard(entry: Media, manifest) {
-    const meta = manifest.metadata[entry.path] ?? {}
+function createCard(data: Media, manifest) {
+    const meta = manifest.metadata[data.path] ?? {}
 
     const card = document.createElement('div')
     card.className = 'card'
@@ -160,7 +163,7 @@ function createCard(entry: Media, manifest) {
         if (!e.isIntersecting) return
         obs.disconnect()
 
-        const file = await entry.handle.getFile()
+        const file = await data.handle.getFile()
         const url = URL.createObjectURL(file)
 
         let display_el
@@ -185,7 +188,8 @@ function createCard(entry: Media, manifest) {
         card.append(display_el)
 
         card.addEventListener('click', () => {
-            openDetail(entry, manifest, display_el, card)
+            // openCard(data, manifest, card, display_el)
+            
         })
     })
     obs.observe(card)
